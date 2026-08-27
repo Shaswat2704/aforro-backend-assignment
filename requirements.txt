@@ -7,3 +7,4 @@ redis==8.1.0
 Faker==40.37.0
 psycopg2-binary==2.9.12
 gunicorn==26.2.0
+drf-spectacular==0.30.0

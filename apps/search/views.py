@@ -1,5 +1,6 @@
 from django.core.cache import cache
 from django.db.models import Case, Exists, IntegerField, OuterRef, Q, Subquery, Value, When
+from drf_spectacular.utils import OpenApiParameter, extend_schema
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
@@ -19,6 +20,21 @@ SORT_OPTIONS = {
 }
 
 
+@extend_schema(
+    summary="Search products by keyword with filters, sorting, and pagination",
+    parameters=[
+        OpenApiParameter("q", str, description="Keyword — matched against title, description, category name"),
+        OpenApiParameter("category", str, description="Category id (e.g. '3') or name (e.g. 'Books')"),
+        OpenApiParameter("price_min", str, description="Inclusive minimum price"),
+        OpenApiParameter("price_max", str, description="Inclusive maximum price"),
+        OpenApiParameter("store_id", int, description="If set, each result includes store_quantity for this store"),
+        OpenApiParameter("in_stock", bool, description="If true, only products with quantity > 0"),
+        OpenApiParameter(
+            "sort", str, enum=["price", "newest", "relevance"],
+            description="Defaults to 'relevance' when q is set, else 'newest'",
+        ),
+    ],
+)
 class ProductSearchView(ListAPIView):
     """
     GET /api/search/products/?q=&category=&price_min=&price_max=&store_id=&in_stock=&sort=
@@ -112,6 +128,11 @@ class ProductSearchView(ListAPIView):
         return response
 
 
+@extend_schema(
+    summary="Autocomplete product titles (min 3 chars, prefix matches ranked first)",
+    parameters=[OpenApiParameter("q", str, required=True, description="Search prefix, minimum 3 characters")],
+    responses={200: {"type": "object", "properties": {"results": {"type": "array", "items": {"type": "string"}}}}},
+)
 class ProductAutocompleteView(APIView):
     """
     GET /api/search/suggest/?q=xxx

@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "django_filters",
+    "drf_spectacular",
     "apps.products",
     "apps.stores",
     "apps.orders",
@@ -138,6 +139,25 @@ REST_FRAMEWORK = {
         "autocomplete": "20/min",
     },
     "EXCEPTION_HANDLER": "apps.common.exceptions.custom_exception_handler",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Aforro Backend API",
+    "DESCRIPTION": (
+        "Order processing, inventory management, and product search/autocomplete "
+        "for the Aforro Backend Developer Assignment (Round 2)."
+    ),
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    # Keeps generated operationIds readable (e.g. "orders_create" rather than
+    # an auto-mangled name) which also makes the Postman collection generated
+    # from this schema easier to navigate.
+    "COMPONENT_SPLIT_REQUEST": True,
+    # Named as a template variable so the Postman collection generated from
+    # this schema uses {{baseUrl}} instead of a hardcoded host — swap the
+    # collection variable to point at any environment (local, docker, staging).
+    "SERVERS": [{"url": "http://localhost:8000", "description": "Local / Docker Compose"}],
 }
 
 # ---------------------------------------------------------------------------

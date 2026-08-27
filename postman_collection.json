@@ -1,0 +1,853 @@
+{
+  "item": [
+    {
+      "name": "api",
+      "description": "",
+      "item": [
+        {
+          "name": "search",
+          "description": "",
+          "item": [
+            {
+              "name": "products",
+              "description": "",
+              "item": [
+                {
+                  "id": "2dfc15a9-d42f-45da-bab1-1d663e5c73a7",
+                  "name": "Search products by keyword with filters, sorting, and pagination",
+                  "request": {
+                    "name": "Search products by keyword with filters, sorting, and pagination",
+                    "description": {
+                      "content": "GET /api/search/products/?q=&category=&price_min=&price_max=&store_id=&in_stock=&sort=\n\n- q: keyword, matched (icontains) against title, description, and\n  category name.\n- category: category id, or category name (falls back to icontains).\n- price_min / price_max: inclusive DecimalField bounds.\n- store_id: when present, each result includes store_quantity \u2014 that\n  product's inventory quantity in this specific store (0 if no row).\n- in_stock=true: only products with quantity > 0. Scoped to store_id\n  if given, otherwise \"in stock somewhere\" (any store).\n- sort: price | newest | relevance (default: relevance when q is set,\n  else newest).\n\nWhole response (post-pagination) is cached for SEARCH_CACHE_TTL\nseconds, keyed by the normalized query string. Cache is invalidated\non any Product/Category/Inventory write \u2014 see search/signals.py.",
+                      "type": "text/plain"
+                    },
+                    "url": {
+                      "path": [
+                        "api",
+                        "search",
+                        "products",
+                        ""
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Category id (e.g. '3') or name (e.g. 'Books')",
+                            "type": "text/plain"
+                          },
+                          "key": "category",
+                          "value": "Electronics"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "If true, only products with quantity > 0",
+                            "type": "text/plain"
+                          },
+                          "key": "in_stock",
+                          "value": "true"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "A page number within the paginated result set.",
+                            "type": "text/plain"
+                          },
+                          "key": "page",
+                          "value": "1"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Inclusive maximum price",
+                            "type": "text/plain"
+                          },
+                          "key": "price_max",
+                          "value": "500.00"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Inclusive minimum price",
+                            "type": "text/plain"
+                          },
+                          "key": "price_min",
+                          "value": "10.00"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Keyword \u2014 matched against title, description, category name",
+                            "type": "text/plain"
+                          },
+                          "key": "q",
+                          "value": "widget"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Defaults to 'relevance' when q is set, else 'newest' (This can only be one of newest,price,relevance)",
+                            "type": "text/plain"
+                          },
+                          "key": "sort",
+                          "value": "relevance"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "If set, each result includes store_quantity for this store",
+                            "type": "text/plain"
+                          },
+                          "key": "store_id",
+                          "value": "1"
+                        }
+                      ],
+                      "variable": [],
+                      "raw": "{{baseUrl}}/api/search/products/?category=Electronics&in_stock=true&page=1&price_max=500.00&price_min=10.00&q=widget&sort=relevance&store_id=1"
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "GET",
+                    "body": {},
+                    "auth": {
+                      "type": "apikey",
+                      "apikey": [
+                        {
+                          "key": "key",
+                          "value": "sessionid"
+                        },
+                        {
+                          "key": "value",
+                          "value": "{{apiKey}}"
+                        },
+                        {
+                          "key": "in",
+                          "value": "header"
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "efb31299-62de-4fbb-9b5d-249cc5fad9e6",
+                      "name": "200",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "search",
+                            "products",
+                            ""
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "Category id (e.g. '3') or name (e.g. 'Books')",
+                                "type": "text/plain"
+                              },
+                              "key": "category",
+                              "value": "<string>"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "If true, only products with quantity > 0",
+                                "type": "text/plain"
+                              },
+                              "key": "in_stock",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "A page number within the paginated result set.",
+                                "type": "text/plain"
+                              },
+                              "key": "page",
+                              "value": "<integer>"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "Inclusive maximum price",
+                                "type": "text/plain"
+                              },
+                              "key": "price_max",
+                              "value": "<string>"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "Inclusive minimum price",
+                                "type": "text/plain"
+                              },
+                              "key": "price_min",
+                              "value": "<string>"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "Keyword \u2014 matched against title, description, category name",
+                                "type": "text/plain"
+                              },
+                              "key": "q",
+                              "value": "<string>"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "Defaults to 'relevance' when q is set, else 'newest' (This can only be one of newest,price,relevance)",
+                                "type": "text/plain"
+                              },
+                              "key": "sort",
+                              "value": "newest"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "If set, each result includes store_quantity for this store",
+                                "type": "text/plain"
+                              },
+                              "key": "store_id",
+                              "value": "<integer>"
+                            }
+                          ],
+                          "variable": []
+                        },
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: apikey",
+                              "type": "text/plain"
+                            },
+                            "key": "sessionid",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "method": "GET",
+                        "body": {}
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"count\": \"<integer>\",\n  \"results\": [\n    {\n      \"category_id\": \"<integer>\",\n      \"category_name\": \"<string>\",\n      \"created_at\": \"<dateTime>\",\n      \"description\": \"<string>\",\n      \"id\": \"<integer>\",\n      \"price\": \"67.\",\n      \"store_quantity\": \"<integer>\",\n      \"title\": \"<string>\"\n    },\n    {\n      \"category_id\": \"<integer>\",\n      \"category_name\": \"<string>\",\n      \"created_at\": \"<dateTime>\",\n      \"description\": \"<string>\",\n      \"id\": \"<integer>\",\n      \"price\": \"14423\",\n      \"store_quantity\": \"<integer>\",\n      \"title\": \"<string>\"\n    }\n  ],\n  \"next\": \"<uri>\",\n  \"previous\": \"<uri>\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    }
+                  ],
+                  "event": [],
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  }
+                }
+              ]
+            },
+            {
+              "name": "suggest",
+              "description": "",
+              "item": [
+                {
+                  "id": "d861baff-a4c7-4466-be48-dd57edddf78d",
+                  "name": "Autocomplete product titles (min 3 chars, prefix matches ranked first)",
+                  "request": {
+                    "name": "Autocomplete product titles (min 3 chars, prefix matches ranked first)",
+                    "description": {
+                      "content": "GET /api/search/suggest/?q=xxx\n\nRequires >= 3 characters. Prefix matches (title__istartswith) are\nreturned before general substring matches, capped at 10 total.\nRate-limited to 20 req/min per user-or-IP via AutocompleteRateThrottle.\nResults are cached briefly since autocomplete traffic is bursty and\nthe same prefixes get hit repeatedly as a user types.",
+                      "type": "text/plain"
+                    },
+                    "url": {
+                      "path": [
+                        "api",
+                        "search",
+                        "suggest",
+                        ""
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "(Required) Search prefix, minimum 3 characters",
+                            "type": "text/plain"
+                          },
+                          "key": "q",
+                          "value": "widget"
+                        }
+                      ],
+                      "variable": [],
+                      "raw": "{{baseUrl}}/api/search/suggest/?q=widget"
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "GET",
+                    "body": {},
+                    "auth": {
+                      "type": "apikey",
+                      "apikey": [
+                        {
+                          "key": "key",
+                          "value": "sessionid"
+                        },
+                        {
+                          "key": "value",
+                          "value": "{{apiKey}}"
+                        },
+                        {
+                          "key": "in",
+                          "value": "header"
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "272fbb27-f56e-4dd2-a4a6-502260ce7be9",
+                      "name": "200",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "api",
+                            "search",
+                            "suggest",
+                            ""
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "(Required) Search prefix, minimum 3 characters",
+                                "type": "text/plain"
+                              },
+                              "key": "q",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": []
+                        },
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: apikey",
+                              "type": "text/plain"
+                            },
+                            "key": "sessionid",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "method": "GET",
+                        "body": {}
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"results\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    }
+                  ],
+                  "event": [],
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "orders",
+      "description": "",
+      "item": [
+        {
+          "id": "aec05945-f120-487a-8d57-79cfda2ac9cf",
+          "name": "Create an order (confirms or rejects based on stock)",
+          "request": {
+            "name": "Create an order (confirms or rejects based on stock)",
+            "description": {
+              "content": "Validates stock for every item atomically. If any item is short, the whole order is REJECTED and no stock is deducted. Otherwise all items are deducted and the order is CONFIRMED.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "orders",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [],
+              "raw": "{{baseUrl}}/orders/"
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"product_id\": 1,\n      \"quantity_requested\": 2\n    },\n    {\n      \"product_id\": 2,\n      \"quantity_requested\": 1\n    }\n  ],\n  \"store_id\": 1\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "sessionid"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "29470627-47a8-4d1e-9765-0a3ca0eb0152",
+              "name": "201",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "orders",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "sessionid",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"product_id\": \"<integer>\",\n      \"quantity_requested\": \"<integer>\"\n    },\n    {\n      \"product_id\": \"<integer>\",\n      \"quantity_requested\": \"<integer>\"\n    }\n  ],\n  \"store_id\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"created_at\": \"<dateTime>\",\n  \"id\": \"<integer>\",\n  \"items\": [\n    {\n      \"product_id\": \"<integer>\",\n      \"quantity_requested\": \"<integer>\",\n      \"title\": \"<string>\"\n    },\n    {\n      \"product_id\": \"<integer>\",\n      \"quantity_requested\": \"<integer>\",\n      \"title\": \"<string>\"\n    }\n  ],\n  \"store_id\": \"<integer>\",\n  \"status\": \"PENDING\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "stores",
+      "description": "",
+      "item": [
+        {
+          "name": "{store_id}",
+          "description": "",
+          "item": [
+            {
+              "name": "inventory",
+              "description": "",
+              "item": [
+                {
+                  "id": "e227098d-c0b1-45ce-853f-ef268d130d72",
+                  "name": "List a store's inventory (alphabetical by product title)",
+                  "request": {
+                    "name": "List a store's inventory (alphabetical by product title)",
+                    "description": {
+                      "content": "GET /stores/<store_id>/inventory/\n\nReturns every inventory row for a store: product title, price, category\nname, and quantity \u2014 sorted alphabetically by product title.\n\nselect_related() pulls product + category in the same query as\ninventory, so listing N rows costs 1 query instead of 1 + N.",
+                      "type": "text/plain"
+                    },
+                    "url": {
+                      "path": [
+                        "stores",
+                        ":store_id",
+                        "inventory",
+                        ""
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "A page number within the paginated result set.",
+                            "type": "text/plain"
+                          },
+                          "key": "page",
+                          "value": "1"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "type": "any",
+                          "value": "1",
+                          "key": "store_id",
+                          "disabled": false,
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          }
+                        }
+                      ],
+                      "raw": "{{baseUrl}}/stores/:store_id/inventory/?page=1"
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "GET",
+                    "body": {},
+                    "auth": {
+                      "type": "apikey",
+                      "apikey": [
+                        {
+                          "key": "key",
+                          "value": "sessionid"
+                        },
+                        {
+                          "key": "value",
+                          "value": "{{apiKey}}"
+                        },
+                        {
+                          "key": "in",
+                          "value": "header"
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "5f879069-43c4-49d9-a629-5a79b496f9b5",
+                      "name": "200",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "stores",
+                            ":store_id",
+                            "inventory",
+                            ""
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "A page number within the paginated result set.",
+                                "type": "text/plain"
+                              },
+                              "key": "page",
+                              "value": "<integer>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "(Required) ",
+                                "type": "text/plain"
+                              },
+                              "type": "any",
+                              "value": "<integer>",
+                              "key": "store_id"
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: apikey",
+                              "type": "text/plain"
+                            },
+                            "key": "sessionid",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "method": "GET",
+                        "body": {}
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"count\": \"<integer>\",\n  \"results\": [\n    {\n      \"category_name\": \"<string>\",\n      \"price\": \"-3.\",\n      \"product_id\": \"<integer>\",\n      \"product_title\": \"<string>\",\n      \"quantity\": \"<integer>\"\n    },\n    {\n      \"category_name\": \"<string>\",\n      \"price\": \"-2760\",\n      \"product_id\": \"<integer>\",\n      \"product_title\": \"<string>\",\n      \"quantity\": \"<integer>\"\n    }\n  ],\n  \"next\": \"<uri>\",\n  \"previous\": \"<uri>\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    }
+                  ],
+                  "event": [],
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  }
+                }
+              ]
+            },
+            {
+              "name": "orders",
+              "description": "",
+              "item": [
+                {
+                  "id": "10c1c34c-f868-49b8-80b8-080907ef4f15",
+                  "name": "List a store's orders (newest first, with total item counts)",
+                  "request": {
+                    "name": "List a store's orders (newest first, with total item counts)",
+                    "description": {
+                      "content": "GET /stores/<store_id>/orders/\n\nNewest first. total_items is summed via annotation (Coalesce guards\nagainst a null Sum if an order somehow has zero items) so this is a\nsingle query regardless of how many orders/items exist.",
+                      "type": "text/plain"
+                    },
+                    "url": {
+                      "path": [
+                        "stores",
+                        ":store_id",
+                        "orders",
+                        ""
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "A page number within the paginated result set.",
+                            "type": "text/plain"
+                          },
+                          "key": "page",
+                          "value": "1"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "type": "any",
+                          "value": "1",
+                          "key": "store_id",
+                          "disabled": false,
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          }
+                        }
+                      ],
+                      "raw": "{{baseUrl}}/stores/:store_id/orders/?page=1"
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "GET",
+                    "body": {},
+                    "auth": {
+                      "type": "apikey",
+                      "apikey": [
+                        {
+                          "key": "key",
+                          "value": "sessionid"
+                        },
+                        {
+                          "key": "value",
+                          "value": "{{apiKey}}"
+                        },
+                        {
+                          "key": "in",
+                          "value": "header"
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "5a313db0-e1cf-4545-8e74-3cce38b4e4fe",
+                      "name": "200",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "stores",
+                            ":store_id",
+                            "orders",
+                            ""
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "A page number within the paginated result set.",
+                                "type": "text/plain"
+                              },
+                              "key": "page",
+                              "value": "<integer>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "(Required) ",
+                                "type": "text/plain"
+                              },
+                              "type": "any",
+                              "value": "<integer>",
+                              "key": "store_id"
+                            }
+                          ]
+                        },
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: apikey",
+                              "type": "text/plain"
+                            },
+                            "key": "sessionid",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "method": "GET",
+                        "body": {}
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n  \"count\": \"<integer>\",\n  \"results\": [\n    {\n      \"created_at\": \"<dateTime>\",\n      \"id\": \"<integer>\",\n      \"total_items\": \"<integer>\",\n      \"status\": \"CONFIRMED\"\n    },\n    {\n      \"created_at\": \"<dateTime>\",\n      \"id\": \"<integer>\",\n      \"total_items\": \"<integer>\",\n      \"status\": \"REJECTED\"\n    }\n  ],\n  \"next\": \"<uri>\",\n  \"previous\": \"<uri>\"\n}",
+                      "cookie": [],
+                      "_postman_previewlanguage": "json"
+                    }
+                  ],
+                  "event": [],
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000"
+    }
+  ],
+  "info": {
+    "_postman_id": "dd4dd3fe-b4f0-4c65-9a74-9931fbdc7c3d",
+    "name": "Aforro Backend API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Postman collection for the Aforro Backend Developer Assignment (Round 2). Generated directly from the project's OpenAPI schema (drf-spectacular), so it always matches the real API surface. Set the 'baseUrl' collection variable to http://localhost:8000 (local/dev server) or http://localhost:8000 (docker compose) before running.\n\nSuggested run order: seed the DB first (`python manage.py seed_data`), then GET a store's inventory to find valid product_id/store_id values before trying POST /orders/."
+  }
+}

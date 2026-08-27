@@ -16,6 +16,7 @@ and assumed correct.
   caching and autocomplete rate-limit counters)
 - Celery 5 (Redis as broker + result backend), with Celery Beat for the
   scheduled job
+- drf-spectacular — OpenAPI 3.0 schema generation + Swagger UI / Redoc
 - Docker Compose for orchestration
 
 ## Project layout
@@ -81,6 +82,43 @@ python manage.py runserver
 celery -A project worker --loglevel=info
 celery -A project beat --loglevel=info
 ```
+
+## API documentation — Swagger / OpenAPI
+
+Interactive, browser-based API docs are built into the project via
+[drf-spectacular](https://drf-spectacular.readthedocs.io/), which generates
+a real OpenAPI 3.0 schema from the actual DRF views/serializers (not
+hand-written and liable to drift out of sync with the code).
+
+With the server running (`docker compose up` or `python manage.py runserver`):
+
+| URL | What it is |
+|---|---|
+| `http://localhost:8000/api/docs/` | **Swagger UI** — every endpoint is testable directly from the browser (expand an endpoint → "Try it out" → fill params/body → Execute) |
+| `http://localhost:8000/api/redoc/` | Redoc — clean read-only reference view of the same schema |
+| `http://localhost:8000/api/schema/` | Raw OpenAPI 3.0 schema (YAML) — importable into Postman, Insomnia, codegen tools, etc. |
+
+The schema is validated with zero warnings/errors
+(`python manage.py spectacular --validate --fail-on-warn`) as part of
+building this project — every endpoint has documented request/response
+shapes and query parameters, not just an auto-generated stub.
+
+## Postman collection
+
+`postman_collection.json` (repo root) is generated directly from the same
+OpenAPI schema above, then enriched with realistic example values (a real
+`store_id`, `product_id`, keyword, price range, etc.) instead of generic
+`<integer>` placeholders, so requests work out of the box.
+
+**To use it:**
+1. Postman → Import → select `postman_collection.json`
+2. Set the collection variable `baseUrl` to `http://localhost:8000` (already the default)
+3. Run `seed_data` first if you haven't, so the sample IDs (`store_id: 1`, `product_id: 1`/`2`) resolve to real records
+4. All 5 endpoints are organized in folders matching the URL structure: `orders`, `stores/{store_id}/inventory`, `stores/{store_id}/orders`, `api/search/products`, `api/search/suggest`
+
+Every request in the collection was fired against a live instance of this
+API and returned a successful (2xx) response before being included here —
+not just structurally valid JSON.
 
 ## Sample API requests
 

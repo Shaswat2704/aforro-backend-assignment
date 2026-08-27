@@ -4,6 +4,7 @@ from django.db import transaction
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
@@ -44,6 +45,16 @@ class OrderCreateView(APIView):
          way, so a REJECTED order still records what was asked for.
     """
 
+    @extend_schema(
+        request=OrderCreateSerializer,
+        responses={201: OrderDetailSerializer},
+        summary="Create an order (confirms or rejects based on stock)",
+        description=(
+            "Validates stock for every item atomically. If any item is short, "
+            "the whole order is REJECTED and no stock is deducted. Otherwise "
+            "all items are deducted and the order is CONFIRMED."
+        ),
+    )
     def post(self, request):
         input_serializer = OrderCreateSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
@@ -107,6 +118,7 @@ class OrderCreateView(APIView):
         return Response(response_data, status=status.HTTP_201_CREATED)
 
 
+@extend_schema(summary="List a store's orders (newest first, with total item counts)")
 class StoreOrderListView(ListAPIView):
     """
     GET /stores/<store_id>/orders/
@@ -119,6 +131,8 @@ class StoreOrderListView(ListAPIView):
     serializer_class = OrderListSerializer
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return Order.objects.none()
         get_object_or_404(Store, pk=self.kwargs["store_id"])
         return (
             Order.objects.filter(store_id=self.kwargs["store_id"])

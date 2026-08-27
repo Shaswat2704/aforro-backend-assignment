@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
 
@@ -17,6 +18,7 @@ class ProductSearchResultSerializer(serializers.Serializer):
     created_at = serializers.DateTimeField()
     store_quantity = serializers.SerializerMethodField()
 
+    @extend_schema_field(serializers.IntegerField(allow_null=True))
     def get_store_quantity(self, obj):
         # Only present when the request included store_id — see
         # ProductSearchView.get_queryset(). Absent otherwise (None).
